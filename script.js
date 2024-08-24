@@ -81,27 +81,65 @@ const productos =[
 
   const inputIngresado = document.getElementById('input');
   const buscarBoton = document.getElementById('btnBuscar');
+  const tarjetas = document.getElementById('tarjetas');
   
-
-  function buscar(){
-    const resultado = productos.filter((producto) =>{
-        return producto.name.toLowerCase() === inputIngresado.value.toLowerCase();
-      });
-
-    if (resultado) {
-        document.getElementById('resultado').innerHTML = `
-          <div>
-            <h2>${resultado.name}</h2>
-            <p>${resultado.description}</p>
-            <p>Precio: $${resultado.price}</p>
-            <img src="${resultado.image}" alt="${resultado.name}">
-          </div>
-        `;
-      } else {
-        document.getElementById('resultado').innerHTML = '<p>Producto no encontrado</p>';
-      }
+  function noResultados() {
+    tarjetas.innerHTML = "<p>No se encontraron objetos</p>";
   }
-
-  buscarBoton.addEventListener("click", buscar);
-
-
+  
+  function displayProducts(productos) {
+    tarjetas.innerHTML = ""; 
+  
+    if (productos.length === 0) {
+      noResultados();
+    } else {
+      productos.forEach(producto => {
+        const column = document.createElement('div');
+        column.className = "column is-one-quarter";
+  
+        const productCard = `
+        <div class="card">
+          <div class="card-image">
+            <figure class="image is-4by3">
+              <img
+                src=${producto.image}
+                alt="Placeholder image"
+              />
+            </figure>
+          </div>
+          <div class="card-content">
+            <div class="media">
+              <div class="media-left">
+                <figure class="image is-48x48">
+                  <img
+                    src=${producto.image}
+                    alt="Placeholder image"
+                  />
+                </figure>
+              </div>
+              <div class="media-content">
+                <p class="title is-4">${producto.name}</p>
+                <p class="has-text-weight-bold">$${producto.price}</p>
+                <p class="subtitle is-6">${producto.description}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        `;
+  
+        column.innerHTML = productCard;
+        tarjetas.appendChild(column);
+      });
+    }
+  }
+  
+  buscarBoton.addEventListener('click', function() {
+    const query = inputIngresado.value.toLowerCase();
+    const filteredProducts = productos.filter(product => 
+      product.name.toLowerCase().includes(query)
+    );
+    displayProducts(filteredProducts);
+  });
+  
+  // Mostrar todos los productos inicialmente
+  displayProducts(productos);

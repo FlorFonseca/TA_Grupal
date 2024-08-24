@@ -1,55 +1,20 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Hello Bulma!</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@1.0.2/css/bulma.min.css">
-    <script type="module" scr="script.js"></script>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Buscador de Productos</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@1.0.2/css/bulma.min.css">
+  <script defer src="script.js"></script>
 </head>
-  <body>
+<body>
   <section class="section">
     <div class="container">
-        <input class="input is-rounded input is-info" id="input" type="text" placeholder="Rounded input Info input" />
-        <button class="button is-link" id="btnBuscar">Search</button>
+      <input class="input is-rounded input is-info" id="input" type="text" placeholder="Ingrese nombre del producto" />
+      <button class="button is-link" id="btnBuscar">Search</button>
     </div>
-    <div>
-        <div class="card">
-        <div class="card-image">
-          <figure class="image is-4by3">
-            <img
-              src="https://bulma.io/assets/images/placeholders/1280x960.png"
-              alt="Placeholder image"
-            />
-          </figure>
-        </div>
-        <div class="card-content">
-          <div class="media">
-            <div class="media-left">
-              <figure class="image is-48x48">
-                <img
-                  src="https://bulma.io/assets/images/placeholders/96x96.png"
-                  alt="Placeholder image"
-                />
-              </figure>
-            </div>
-            <div class="media-content">
-              <p class="title is-4">John Smith</p>
-              <p class="subtitle is-6">@johnsmith</p>
-            </div>
-          </div>
-      
-          <div class="content">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus nec
-            iaculis mauris. <a>@bulmaio</a>. <a href="#">#css</a>
-            <a href="#">#responsive</a>
-            <br />
-            <time datetime="2016-1-1">11:09 PM - 1 Jan 2016</time>
-          </div>
-        </div>
-      </div>
-    </div>
+    <div id="tarjetas" class="columns is-multiline"></div>
     <div id="resultado"></div>
   </section>
-  </body>
+</body>
 </html>

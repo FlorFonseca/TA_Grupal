@@ -11,10 +11,56 @@
   <section class="section">
     <div class="container">
       <input class="input is-rounded input is-info" id="input" type="text" placeholder="Ingrese nombre del producto" /><br>
-      <button class="button is-link" id="btnBuscar">Search</button><br>
+      <button class="button is-link" id="btnBuscar">Search</button>
+      <button class="js-modal-trigger button is-link"  data-target="modal-js-example">
+          New product
+      </button>
     </div><br>
     <div id="tarjetas" class="columns is-multiline"></div>
     <div id="resultado"></div>
   </section>
+  <div id="modal-js-example" class="modal">
+    <div class="modal-background"></div>
+
+    <div class="modal-content">
+      <div class="box">
+        <input
+        id="Name"
+        class="input is-info m-2"
+        type="text"
+        placeholder="Product name"
+      />
+        <input
+        id="description"
+        class="input is-info m-2"
+        type="text"
+        placeholder="Product description"
+      />
+      <input
+      id="price"
+      class="input is-info m-2"
+      type="text"
+      placeholder="Price"
+    />
+    <div class="file">
+      <label class="file-label">
+        <input class="file-input" id="image" type="file" name="resume" />
+        <span class="file-cta">
+          <span class="file-icon">
+            <i class="fas fa-upload"></i>
+          </span>
+          <span class="file-label"> Choose a file… </span>
+        </span>
+      </label>
+    </div>
+      </div>
+    </div>
+    <footer class="modal-card-foot">
+      <div class="buttons">
+        <button class="button is-success" id="Create">Save changes</button>
+        <button class="button">Cancel</button>
+      </div>
+
+    </footer>
 </body>
 </html>

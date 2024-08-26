@@ -140,6 +140,73 @@ const productos =[
     );
     displayProducts(filteredProducts);
   });
+
+/*------------------------------ PARTE 2 ---------------------------------- */
+  document.addEventListener('DOMContentLoaded', () => {
+
+    function openModal($el) {
+      $el.classList.add('is-active');
+    }
   
+    function closeModal($el) {
+      $el.classList.remove('is-active');
+    }
+  
+    function closeAllModals() {
+      (document.querySelectorAll('.modal') || []).forEach(($modal) => {
+        closeModal($modal);
+      });
+    }
+  
+    // Add a click event on buttons to open a specific modal
+    (document.querySelectorAll('.js-modal-trigger') || []).forEach(($trigger) => {
+      const modal = $trigger.dataset.target;
+      const $target = document.getElementById(modal);
+  
+      $trigger.addEventListener('click', () => {
+        openModal($target);
+      });
+    });
+  
+    // Add a click event on various child elements to close the parent modal
+    (document.querySelectorAll('.modal-background, .modal-close, .modal-card-head .delete, .modal-card-foot .button') || []).forEach(($close) => {
+      const $target = $close.closest('.modal');
+  
+      $close.addEventListener('click', () => {
+        closeModal($target);
+      });
+    });
+  
+    // Add a keyboard event to close all modals
+    document.addEventListener('keydown', (event) => {
+      if(event.key === "Escape") {
+        closeAllModals();
+      }
+    });
+  });
+
+  
+
+  const name2 = document.getElementById('Name');
+  const description = document.getElementById('description');
+  const price = document.getElementById('price');
+  const image = document.getElementById('image');
+
+  function agregarProducto() {
+    const nuevoProducto = {
+      name: name2.value,
+      description: description.value,
+      price: parseFloat(price.value), 
+      image: image.files.length > 0 ? URL.createObjectURL(image.files[0]) : "https://via.placeholder.com/150?text=Image+Not+Available"
+    };
+  
+    productos.push(nuevoProducto);
+    displayProducts(productos);
+  }
+
+  const funcionCrear = document.getElementById('Create');
+
+  funcionCrear.addEventListener('click', agregarProducto);
+
   // Mostrar todos los productos inicialmente
   displayProducts(productos);

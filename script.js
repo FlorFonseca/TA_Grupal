@@ -93,158 +93,164 @@ const productos = [
 ];
 
 
-  const inputIngresado = document.getElementById('input');
-  const buscarBoton = document.getElementById('btnBuscar');
-  const tarjetas = document.getElementById('tarjetas');
-  
-  function noResultados() {
-    tarjetas.innerHTML = "<p>No se encontraron objetos</p>";
-  }
-  
-  function displayProducts(productos) {
-    tarjetas.innerHTML = ""; 
-  
-    if (productos.length === 0) {
-      noResultados();
-    } else {
-      productos.forEach(producto => {
-        const column = document.createElement('div');
-        column.className = "column is-one-quarter";
-  
-        const productCard = `
-        <div class="card">
-          <div class="card-image">
-            <figure class="image is-4by3">
-              <img
-                src=${producto.image}
-                alt="Placeholder image"
-              />
-            </figure>
-          </div>
-          <div class="card-content">
-            <div class="media">
-              <div class="media-left">
-                <figure class="image is-48x48">
-                  <img
-                    src=${producto.image}
-                    alt="Placeholder image"
-                  />
-                </figure>
-              </div>
-              <div class="media-content">
-                <p class="title is-4">${producto.name}</p>
-                <p class="has-text-weight-bold">$${producto.price}</p>
-                <p class="subtitle is-6">${producto.description}</p>
-              </div>
+const inputIngresado = document.getElementById('input');
+const buscarBoton = document.getElementById('btnBuscar');
+const tarjetas = document.getElementById('tarjetas');
+
+function noResultados() {
+  tarjetas.innerHTML = "<p>No se encontraron objetos</p>";
+}
+
+function displayProducts(productos) {
+  tarjetas.innerHTML = ""; 
+
+  if (productos.length === 0) {
+    noResultados();
+  } else {
+    productos.forEach(producto => {
+      const column = document.createElement('div');
+      column.className = "column is-one-quarter";
+
+      const productCard = `
+      <div class="card">
+        <div class="card-image">
+          <figure class="image is-4by3">
+            <img src=${producto.image} alt="Placeholder image" />
+          </figure>
+        </div>
+        <div class="card-content">
+          <div class="media">
+            <div class="media-left">
+              <figure class="image is-48x48">
+                <img src=${producto.image} alt="Placeholder image" />
+              </figure>
+            </div>
+            <div class="media-content">
+              <p class="title is-4">${producto.name}</p>
+              <p class="has-text-weight-bold">$${producto.price}</p>
+              <p class="subtitle is-6">${producto.description}</p>
             </div>
           </div>
         </div>
-        `;
-  
-        column.innerHTML = productCard;
-        tarjetas.appendChild(column);
+      </div>
+      `;
+
+      column.innerHTML = productCard;
+      tarjetas.appendChild(column);
+
+      // Evento para abrir el modal con la descripción
+      column.querySelector('.card').addEventListener('click', function() {
+        abrirProducto(producto.description);
       });
-    }
+    });
   }
-  
-  buscarBoton.addEventListener('click', function() {
-    const query = inputIngresado.value.toLowerCase();
-    const filteredProducts = productos.filter(product => 
-      product.name.toLowerCase().includes(query)
-    );
-    displayProducts(filteredProducts);
-  });
+}
+
+buscarBoton.addEventListener('click', function() {
+  const query = inputIngresado.value.toLowerCase();
+  const filteredProducts = productos.filter(product => 
+    product.name.toLowerCase().includes(query)
+  );
+  displayProducts(filteredProducts);
+});
 
 /*------------------------------ PARTE 2 ---------------------------------- */
-  document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', () => {
 
-    function openModal($el) {
-      $el.classList.add('is-active');
-    }
-  
-    function closeModal($el) {
-      $el.classList.remove('is-active');
-    }
-  
-    function closeAllModals() {
-      (document.querySelectorAll('.modal') || []).forEach(($modal) => {
-        closeModal($modal);
-      });
-    }
-  
-    // Add a click event on buttons to open a specific modal
-    (document.querySelectorAll('.js-modal-trigger') || []).forEach(($trigger) => {
-      const modal = $trigger.dataset.target;
-      const $target = document.getElementById(modal);
-  
-      $trigger.addEventListener('click', () => {
-        openModal($target);
-      });
+  function openModal($el) {
+    $el.classList.add('is-active');
+  }
+
+  function closeModal($el) {
+    $el.classList.remove('is-active');
+  }
+
+  function closeAllModals() {
+    (document.querySelectorAll('.modal') || []).forEach(($modal) => {
+      closeModal($modal);
     });
-  
-    // Add a click event on various child elements to close the parent modal
-    (document.querySelectorAll('.modal-background, .modal-close, .modal-card-head .delete, .modal-card-foot .button') || []).forEach(($close) => {
-      const $target = $close.closest('.modal');
-  
-      $close.addEventListener('click', () => {
-        closeModal($target);
-      });
-    });
-  
-    // Add a keyboard event to close all modals
-    document.addEventListener('keydown', (event) => {
-      if(event.key === "Escape") {
-        closeAllModals();
-      }
+  }
+
+  // Agregar evento a botones para abrir un modal específico
+  (document.querySelectorAll('.js-modal-trigger') || []).forEach(($trigger) => {
+    const modal = $trigger.dataset.target;
+    const $target = document.getElementById(modal);
+
+    $trigger.addEventListener('click', () => {
+      openModal($target);
     });
   });
 
-  
+  // Agregar evento de clic en varios elementos para cerrar el modal
+  (document.querySelectorAll('.modal-background, .modal-close, .modal-card-head .delete, .modal-card-foot .button') || []).forEach(($close) => {
+    const $target = $close.closest('.modal');
 
-  const name2 = document.getElementById('Name');
-  const description = document.getElementById('description');
-  const price = document.getElementById('price');
-  const image = document.getElementById('image');
+    $close.addEventListener('click', () => {
+      closeModal($target);
+    });
+  });
 
-  function agregarProducto() {
-    const nameValue = name2.value.trim();
-    const descriptionValue = description.value.trim();
-    const priceValue = parseFloat(price.value);
-    const imageFile = image.files.length > 0 ? image.files[0] : null;
-    const id = productos.length +1;
-    
-    if (nameValue === "") {
-      alert("El nombre del producto no puede estar vacío.");
-      return;
+  // Cerrar todos los modales con la tecla Escape
+  document.addEventListener('keydown', (event) => {
+    if(event.key === "Escape") {
+      closeAllModals();
     }
+  });
+});
+
+const name2 = document.getElementById('Name');
+const description = document.getElementById('description');
+const price = document.getElementById('price');
+const image = document.getElementById('image');
+
+function agregarProducto() {
+  const nameValue = name2.value.trim();
+  const descriptionValue = description.value.trim();
+  const priceValue = parseFloat(price.value);
+  const imageFile = image.files.length > 0 ? image.files[0] : null;
+  const id = productos.length +1;
   
-    if (descriptionValue === "") {
-      alert("La descripción del producto debe tener al menos 10 caracteres.");
-      return;
-    }
-  
-    if (isNaN(priceValue) || priceValue <= 0) {
-      alert("El precio debe ser un número válido mayor que cero.");
-      return;
-    }
-  
-    if (imageFile && !['image/jpeg', 'image/png', 'image/gif'].includes(imageFile.type)) {
-      alert("El archivo seleccionado no es una imagen válida. Por favor, selecciona un archivo JPEG, PNG o GIF.");
-      return;
-    }
-  
-    const nuevoProducto = {
-      name: nameValue,
-      description: descriptionValue,
-      price: priceValue,
-      image: imageFile ? URL.createObjectURL(imageFile) : "https://via.placeholder.com/150?text=Image+Not+Available"
-    };
-    productos.push(nuevoProducto);
-    displayProducts(productos);
+  if (nameValue === "") {
+    alert("El nombre del producto no puede estar vacío.");
+    return;
   }
-  const funcionCrear = document.getElementById('Create');
 
-  funcionCrear.addEventListener('click', agregarProducto);
+  if (descriptionValue === "") {
+    alert("La descripción del producto debe tener al menos 10 caracteres.");
+    return;
+  }
 
-  // Mostrar todos los productos inicialmente
+  if (isNaN(priceValue) || priceValue <= 0) {
+    alert("El precio debe ser un número válido mayor que cero.");
+    return;
+  }
+
+  if (imageFile && !['image/jpeg', 'image/png', 'image/gif'].includes(imageFile.type)) {
+    alert("El archivo seleccionado no es una imagen válida. Por favor, selecciona un archivo JPEG, PNG o GIF.");
+    return;
+  }
+
+  const nuevoProducto = {
+    name: nameValue,
+    description: descriptionValue,
+    price: priceValue,
+    image: imageFile ? URL.createObjectURL(imageFile) : "https://via.placeholder.com/150?text=Image+Not+Available"
+  };
+  productos.push(nuevoProducto);
   displayProducts(productos);
+}
+
+const funcionCrear = document.getElementById('Create');
+
+// Mostrar todos los productos inicialmente
+displayProducts(productos);
+funcionCrear.addEventListener('click', agregarProducto);
+
+const descriptionAInsertar = document.getElementById('modalDescription');
+
+function abrirProducto(description) {
+  descriptionAInsertar.textContent = description; // Actualizar la descripción en el modal
+  
+  const modal = document.getElementById('productModal');
+  modal.classList.add('is-active'); // Abrir el modal
+}

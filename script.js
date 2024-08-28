@@ -246,5 +246,87 @@ const productos = [
 
   funcionCrear.addEventListener('click', agregarProducto);
 
+/*------------------------------------------------------------------- */
+  function displayProducts(productos) {
+    tarjetas.innerHTML = ""; 
+  
+    if (productos.length === 0) {
+      noResultados();
+    } else {
+      productos.forEach(producto => {
+        const column = document.createElement('div');
+        column.className = "column is-one-quarter";
+  
+        const productCard = `
+        <div class="card js-modal-trigger" data-target="product-modal" data-id="${producto.id}">
+          <div class="card-image">
+            <figure class="image is-4by3">
+              <img src="${producto.image}" alt="${producto.name}">
+            </figure>
+          </div>
+          <div class="card-content">
+            <div class="media">
+              <div class="media-left">
+                <figure class="image is-48x48">
+                  <img src="${producto.image}" alt="${producto.name}">
+                </figure>
+              </div>
+              <div class="media-content">
+                <p class="title is-4">${producto.name}</p>
+                <p class="has-text-weight-bold">$${producto.price}</p>
+                <p class="subtitle is-6">${producto.description}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        `;
+  
+        column.innerHTML = productCard;
+        tarjetas.appendChild(column);
+      });
+  
+      // Añadir evento de clic a cada tarjeta para abrir el modal
+      document.querySelectorAll('.js-modal-trigger').forEach(trigger => {
+        trigger.addEventListener('click', function() {
+          const productId = this.dataset.id;
+          const product = productos.find(p => p.id == productId);
+          if (product) {
+            document.getElementById('modal-product-image').src = product.image;
+            document.getElementById('modal-product-name').textContent = product.name;
+            document.getElementById('modal-product-description').textContent = product.description;
+            document.getElementById('modal-product-price').textContent = `$${product.price}`;
+            openModal(document.getElementById('product-modal'));
+          }
+        });
+      });
+    }
+  }
+  
+  function openModal($el) {
+    $el.classList.add('is-active');
+  }
+  
+  function closeModal($el) {
+    $el.classList.remove('is-active');
+  }
+  
+  document.addEventListener('DOMContentLoaded', () => {
+    // Cerrar el modal al hacer clic en el fondo o en el botón de cerrar
+    document.querySelectorAll('.modal-background, .modal-close').forEach(($close) => {
+      const $target = $close.closest('.modal');
+  
+      $close.addEventListener('click', () => {
+        closeModal($target);
+      });
+    });
+  
+    // Cerrar el modal al presionar la tecla "Escape"
+    document.addEventListener('keydown', (event) => {
+      if (event.key === "Escape") {
+        closeModal(document.getElementById('product-modal'));
+      }
+    });
+  });
+  
   // Mostrar todos los productos inicialmente
   displayProducts(productos);

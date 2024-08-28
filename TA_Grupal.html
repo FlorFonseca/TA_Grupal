@@ -10,7 +10,11 @@
 <body>
   <section class="section">
     <div class="container">
-      <input class="input is-rounded input is-info" id="input" type="text" placeholder="Ingrese nombre del producto" /><br>
+      <input class="input is-rounded input is-info" id="input" type="text" placeholder="Ingrese nombre del producto" />
+      <div id="Carrito" class="carrito" ondrop="drop(event)" ondragover="allowDrop(event)">
+        <h5>Arrastre aquí.</h5>
+        <ul id="carrito-list"></ul>
+      </div><br>
       <button class="button is-link" id="btnBuscar">Search</button>
       <button class="js-modal-trigger button is-link"  data-target="modal-js-example">New product</button>
     </div><br>

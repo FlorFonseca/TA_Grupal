@@ -1,83 +1,97 @@
-const productos =[
-    {
-      "name": "Wireless Mouse",
-      "description": "Ergonomic wireless mouse with adjustable DPI.",
-      "price": 29.99,
-      "image": "https://via.placeholder.com/150?text=Wireless+Mouse"
-    },
-    {
-      "name": "Mechanical Keyboard",
-      "description": "RGB backlit mechanical keyboard with Cherry MX switches.",
-      "price": 89.99,
-      "image": "https://via.placeholder.com/150?text=Mechanical+Keyboard"
-    },
-    {
-      "name": "Gaming Headset",
-      "description": "Surround sound gaming headset with noise-cancelling microphone.",
-      "price": 59.99,
-      "image": "https://via.placeholder.com/150?text=Gaming+Headset"
-    },
-    {
-      "name": "27-inch Monitor",
-      "description": "4K UHD monitor with IPS display and 144Hz refresh rate.",
-      "price": 329.99,
-      "image": "https://via.placeholder.com/150?text=27-inch+Monitor"
-    },
-    {
-      "name": "Laptop Stand",
-      "description": "Adjustable aluminum laptop stand for ergonomic work setup.",
-      "price": 39.99,
-      "image": "https://via.placeholder.com/150?text=Laptop+Stand"
-    },
-    {
-      "name": "USB-C Hub",
-      "description": "Multi-port USB-C hub with HDMI, USB 3.0, and SD card reader.",
-      "price": 24.99,
-      "image": "https://via.placeholder.com/150?text=USB-C+Hub"
-    },
-    {
-      "name": "External SSD",
-      "description": "Portable external SSD with 1TB storage and USB 3.1 interface.",
-      "price": 129.99,
-      "image": "https://via.placeholder.com/150?text=External+SSD"
-    },
-    {
-      "name": "Smartphone Stand",
-      "description": "Adjustable smartphone stand with 360-degree rotation.",
-      "price": 19.99,
-      "image": "https://via.placeholder.com/150?text=Smartphone+Stand"
-    },
-    {
-      "name": "Bluetooth Speaker",
-      "description": "Portable Bluetooth speaker with 10-hour battery life.",
-      "price": 49.99,
-      "image": "https://via.placeholder.com/150?text=Bluetooth+Speaker"
-    },
-    {
-      "name": "Webcam",
-      "description": "1080p HD webcam with built-in microphone and privacy cover.",
-      "price": 34.99,
-      "image": "https://via.placeholder.com/150?text=Webcam"
-    },
-    {
-      "name": "Wireless Charger",
-      "description": "Fast wireless charger with Qi compatibility.",
-      "price": 25.99,
-      "image": "https://via.placeholder.com/150?text=Wireless+Charger"
-    },
-    {
-      "name": "Noise-Cancelling Headphones",
-      "description": "Over-ear noise-cancelling headphones with Bluetooth connectivity.",
-      "price": 199.99,
-      "image": "https://via.placeholder.com/150?text=Noise-Cancelling+Headphones"
-    },
-    {
-      "name": "Smartwatch",
-      "description": "Smartwatch with heart rate monitor and GPS.",
-      "price": 149.99,
-      "image": "https://via.placeholder.com/150?text=Smartwatch"
-    }
-  ];
+const productos = [
+  {
+    "name": "Wireless Mouse",
+    "description": "Ergonomic wireless mouse with adjustable DPI.",
+    "price": 29.99,
+    "image": "https://via.placeholder.com/150?text=Wireless+Mouse",
+    "id": 1
+  },
+  {
+    "name": "Mechanical Keyboard",
+    "description": "RGB backlit mechanical keyboard with Cherry MX switches.",
+    "price": 89.99,
+    "image": "https://via.placeholder.com/150?text=Mechanical+Keyboard",
+    "id": 2
+  },
+  {
+    "name": "Gaming Headset",
+    "description": "Surround sound gaming headset with noise-cancelling microphone.",
+    "price": 59.99,
+    "image": "https://via.placeholder.com/150?text=Gaming+Headset",
+    "id": 3
+  },
+  {
+    "name": "27-inch Monitor",
+    "description": "4K UHD monitor with IPS display and 144Hz refresh rate.",
+    "price": 329.99,
+    "image": "https://via.placeholder.com/150?text=27-inch+Monitor",
+    "id": 4
+  },
+  {
+    "name": "Laptop Stand",
+    "description": "Adjustable aluminum laptop stand for ergonomic work setup.",
+    "price": 39.99,
+    "image": "https://via.placeholder.com/150?text=Laptop+Stand",
+    "id": 5
+  },
+  {
+    "name": "USB-C Hub",
+    "description": "Multi-port USB-C hub with HDMI, USB 3.0, and SD card reader.",
+    "price": 24.99,
+    "image": "https://via.placeholder.com/150?text=USB-C+Hub",
+    "id": 6
+  },
+  {
+    "name": "External SSD",
+    "description": "Portable external SSD with 1TB storage and USB 3.1 interface.",
+    "price": 129.99,
+    "image": "https://via.placeholder.com/150?text=External+SSD",
+    "id": 7
+  },
+  {
+    "name": "Smartphone Stand",
+    "description": "Adjustable smartphone stand with 360-degree rotation.",
+    "price": 19.99,
+    "image": "https://via.placeholder.com/150?text=Smartphone+Stand",
+    "id": 8
+  },
+  {
+    "name": "Bluetooth Speaker",
+    "description": "Portable Bluetooth speaker with 10-hour battery life.",
+    "price": 49.99,
+    "image": "https://via.placeholder.com/150?text=Bluetooth+Speaker",
+    "id": 9
+  },
+  {
+    "name": "Webcam",
+    "description": "1080p HD webcam with built-in microphone and privacy cover.",
+    "price": 34.99,
+    "image": "https://via.placeholder.com/150?text=Webcam",
+    "id": 10
+  },
+  {
+    "name": "Wireless Charger",
+    "description": "Fast wireless charger with Qi compatibility.",
+    "price": 25.99,
+    "image": "https://via.placeholder.com/150?text=Wireless+Charger",
+    "id": 11
+  },
+  {
+    "name": "Noise-Cancelling Headphones",
+    "description": "Over-ear noise-cancelling headphones with Bluetooth connectivity.",
+    "price": 199.99,
+    "image": "https://via.placeholder.com/150?text=Noise-Cancelling+Headphones",
+    "id": 12
+  },
+  {
+    "name": "Smartwatch",
+    "description": "Smartwatch with heart rate monitor and GPS.",
+    "price": 149.99,
+    "image": "https://via.placeholder.com/150?text=Smartwatch",
+    "id": 13
+  }
+];
+
 
   const inputIngresado = document.getElementById('input');
   const buscarBoton = document.getElementById('btnBuscar');
@@ -193,17 +207,41 @@ const productos =[
   const image = document.getElementById('image');
 
   function agregarProducto() {
-    const nuevoProducto = {
-      name: name2.value,
-      description: description.value,
-      price: parseFloat(price.value), 
-      image: image.files.length > 0 ? URL.createObjectURL(image.files[0]) : "https://via.placeholder.com/150?text=Image+Not+Available"
-    };
+    const nameValue = name2.value.trim();
+    const descriptionValue = description.value.trim();
+    const priceValue = parseFloat(price.value);
+    const imageFile = image.files.length > 0 ? image.files[0] : null;
+    const id = productos.length +1;
+    
+    if (nameValue === "") {
+      alert("El nombre del producto no puede estar vacío.");
+      return;
+    }
   
+    if (descriptionValue === "") {
+      alert("La descripción del producto debe tener al menos 10 caracteres.");
+      return;
+    }
+  
+    if (isNaN(priceValue) || priceValue <= 0) {
+      alert("El precio debe ser un número válido mayor que cero.");
+      return;
+    }
+  
+    if (imageFile && !['image/jpeg', 'image/png', 'image/gif'].includes(imageFile.type)) {
+      alert("El archivo seleccionado no es una imagen válida. Por favor, selecciona un archivo JPEG, PNG o GIF.");
+      return;
+    }
+  
+    const nuevoProducto = {
+      name: nameValue,
+      description: descriptionValue,
+      price: priceValue,
+      image: imageFile ? URL.createObjectURL(imageFile) : "https://via.placeholder.com/150?text=Image+Not+Available"
+    };
     productos.push(nuevoProducto);
     displayProducts(productos);
   }
-
   const funcionCrear = document.getElementById('Create');
 
   funcionCrear.addEventListener('click', agregarProducto);

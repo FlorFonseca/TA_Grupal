@@ -140,7 +140,7 @@ function displayProducts(productos) {
 
       // Evento para abrir el modal con la descripción
       column.querySelector('.card').addEventListener('click', function() {
-        abrirProducto(producto.description);
+        abrirProducto(producto);
       });
     });
   }
@@ -246,11 +246,15 @@ const funcionCrear = document.getElementById('Create');
 displayProducts(productos);
 funcionCrear.addEventListener('click', agregarProducto);
 
+const nombreAInsertar = document.getElementById('modalName');
 const descriptionAInsertar = document.getElementById('modalDescription');
+const precioAInsertar = document.getElementById('modalPrice');
 
-function abrirProducto(description) {
-  descriptionAInsertar.textContent = description; // Actualizar la descripción en el modal
-  
+function abrirProducto(product) {
+  nombreAInsertar.textContent = product.name; // Actualizar la descripción en el modal
+  descriptionAInsertar.textContent = product.description; // Actualizar la descripción en el modal
+  precioAInsertar.textContent = "$" + product.price; // Actualizar la descripción en el modal
+
   const modal = document.getElementById('productModal');
   modal.classList.add('is-active'); // Abrir el modal
 }

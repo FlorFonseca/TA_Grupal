@@ -142,6 +142,9 @@ function displayProducts(productos) {
       column.querySelector('.card').addEventListener('click', function() {
         abrirProducto(producto);
       });
+      column.querySelector('.card').addEventListener('dragstart', function(event) {
+        event.dataTransfer.setData('text/plain', JSON.stringify(producto));
+      });
     });
   }
 }
@@ -257,4 +260,51 @@ function abrirProducto(product) {
 
   const modal = document.getElementById('productModal');
   modal.classList.add('is-active'); // Abrir el modal
+}
+
+const carrito = document.getElementById('carrito');
+const productosEnCarrito = [];
+
+carrito.addEventListener('dragover', function(event) {
+  event.preventDefault(); // Permite soltar
+});
+
+carrito.addEventListener('drop', function(event) {
+  event.preventDefault();
+  const data = event.dataTransfer.getData('text/plain');
+  const producto = JSON.parse(data);
+
+  agregarProductoAlCarrito(producto);
+});
+
+function agregarProductoAlCarrito(producto) {
+  // Evitar duplicados
+  const productoExistente = productosEnCarrito.find(p => p.id === producto.id);
+  if (!productoExistente) {
+    productosEnCarrito.push(producto);
+
+    const item = document.createElement('div');
+    item.className = "box";
+    item.innerHTML = `
+      <p><strong>${producto.name}</strong></p>
+      <p>$${producto.price}</p>
+      <button class="button is-danger is-small" onclick="eliminarProductoDelCarrito(${producto.id})">Eliminar</button>
+    `;
+
+    carrito.appendChild(item);
+  } else {
+    alert("Este producto ya está en el carrito.");
+  }
+}
+
+function eliminarProductoDelCarrito(id) {
+  // Eliminar el producto del array
+  const index = productosEnCarrito.findIndex(producto => producto.id === id);
+  if (index !== -1) {
+    productosEnCarrito.splice(index, 1);
+
+    // Actualizar la interfaz
+    const item = carrito.querySelector(`.box:nth-child(${index + 1})`);
+    carrito.removeChild(item);
+  }
 }

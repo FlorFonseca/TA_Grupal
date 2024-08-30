@@ -5,20 +5,24 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Buscador de Productos</title>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@1.0.2/css/bulma.min.css">
+  <link rel="stylesheet" href="style.css">
   <script defer src="script.js"></script>
 </head>
 <body>
   <section class="section">
     <div class="container">
       <input class="input is-rounded input is-info" id="input" type="text" placeholder="Ingrese nombre del producto" /><br>
+      <div id="botones">
       <button class="button is-link" id="btnBuscar">Search</button>
       <button class="js-modal-trigger button is-link"  data-target="modal-js-example">New product</button>
+      </div>
     </div><br>
     <div id="tarjetas" class="columns is-multiline"></div>
     <div id="resultado"></div>
   </section>
+  
   <div id="carrito" class="box">
-    <h2 class="title">Carrito de Compras</h2>
+    <h2 class="title">Carrito de compras</h2>
     <div id="carritoItems" class="content">
       
     </div>

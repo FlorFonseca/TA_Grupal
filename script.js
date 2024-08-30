@@ -1,3 +1,4 @@
+/*Lista de productos en la tienda. Acá están almacenados los productos que se muestran en la página*/
 const productos = [
   {
     "name": "Wireless Mouse",
@@ -92,18 +93,29 @@ const productos = [
   }
 ];
 
+/*Manejo para el input, los botones y la creación de las tarjetas para los productos*/
 
 const inputIngresado = document.getElementById('input');
 const buscarBoton = document.getElementById('btnBuscar');
 const tarjetas = document.getElementById('tarjetas');
 
+
+/**
+ * Devuelve un mensaje en caso de no haber encontrado un producto.
+*/
 function noResultados() {
   tarjetas.innerHTML = "<p>No se encontraron objetos</p>";
 }
 
+/**
+ * Esta función se encarga de mostrar los productos en la pantalla. 
+ * Para eso, se encarga de crear las tarjetas de cada uno y ponerles las propiedades adecuadas para el
+ * drag and drop. Además, ya se crea un evento al hacer click que hace que se muestre el modal con la información del producto.
+*/
 function displayProducts(productos) {
   tarjetas.innerHTML = ""; 
 
+  /*Con este IF se crea la estructura de la tarjeta para cada producto */
   if (productos.length === 0) {
     noResultados();
   } else {
@@ -142,6 +154,8 @@ function displayProducts(productos) {
       column.querySelector('.card').addEventListener('click', function() {
         abrirProducto(producto);
       });
+
+      //Evento para "habilitar" el drag and drop
       column.querySelector('.card').addEventListener('dragstart', function(event) {
         event.dataTransfer.setData('text/plain', JSON.stringify(producto));
       });
@@ -149,6 +163,9 @@ function displayProducts(productos) {
   }
 }
 
+/**
+ * Acá habilitamos la busqueda cliqueando en el botón de "Search" como parte de la letra de la propuesta
+ */
 buscarBoton.addEventListener('click', function() {
   const query = inputIngresado.value.toLowerCase();
   const filteredProducts = productos.filter(product => 
@@ -157,9 +174,23 @@ buscarBoton.addEventListener('click', function() {
   displayProducts(filteredProducts);
 });
 
-/*------------------------------ PARTE 2 ---------------------------------- */
-document.addEventListener('DOMContentLoaded', () => {
+/**
+ * Esta es una alternativa al botón "Search", acá se realiza una búsqueda dinámica de los productos en la página
+ */
+inputIngresado.addEventListener('input', function() {
+  const query = inputIngresado.value.toLowerCase();
+  const filteredProducts = productos.filter(product => 
+    product.name.toLowerCase().includes(query)
+  );
+  displayProducts(filteredProducts);
+});
 
+/*------------------------------ PARTE 2 ---------------------------------- */
+
+/**
+ * Código extraído de Bulma para el modal.
+ */
+document.addEventListener('DOMContentLoaded', () => {
   function openModal($el) {
     $el.classList.add('is-active');
   }
@@ -174,7 +205,6 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // Agregar evento a botones para abrir un modal específico
   (document.querySelectorAll('.js-modal-trigger') || []).forEach(($trigger) => {
     const modal = $trigger.dataset.target;
     const $target = document.getElementById(modal);
@@ -184,7 +214,6 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-  // Agregar evento de clic en varios elementos para cerrar el modal
   (document.querySelectorAll('.modal-background, .modal-close, .modal-card-head .delete, .modal-card-foot .button') || []).forEach(($close) => {
     const $target = $close.closest('.modal');
 
@@ -193,7 +222,6 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-  // Cerrar todos los modales con la tecla Escape
   document.addEventListener('keydown', (event) => {
     if(event.key === "Escape") {
       closeAllModals();
@@ -201,18 +229,22 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 });
 
+/**
+ * Sección para agregar un nuevo producto a la página
+ */
 const name2 = document.getElementById('Name');
 const description = document.getElementById('description');
 const price = document.getElementById('price');
 const image = document.getElementById('image');
+const funcionCrear = document.getElementById('Create');
 
 function agregarProducto() {
   const nameValue = name2.value.trim();
   const descriptionValue = description.value.trim();
   const priceValue = parseFloat(price.value);
   const imageFile = image.files.length > 0 ? image.files[0] : null;
-  const id = productos.length +1;
-  
+  const id = productos.length + 1;
+
   if (nameValue === "") {
     alert("El nombre del producto no puede estar vacío.");
     return;
@@ -237,38 +269,51 @@ function agregarProducto() {
     name: nameValue,
     description: descriptionValue,
     price: priceValue,
-    image: imageFile ? URL.createObjectURL(imageFile) : "https://via.placeholder.com/150?text=Image+Not+Available"
+    image: imageFile ? URL.createObjectURL(imageFile) : "https://via.placeholder.com/150?text=Image+Not+Available",
+    id: // Agregar id aquí
   };
   productos.push(nuevoProducto);
   displayProducts(productos);
 }
 
-const funcionCrear = document.getElementById('Create');
-
-// Mostrar todos los productos inicialmente
 displayProducts(productos);
+
 funcionCrear.addEventListener('click', agregarProducto);
 
-const nombreAInsertar = document.getElementById('modalName');
-const descriptionAInsertar = document.getElementById('modalDescription');
-const precioAInsertar = document.getElementById('modalPrice');
+/**
+ * Sección para el manejo de los Modales
+ */
 
+const nombreDelModal = document.getElementById('modalName');
+const descriptionDelModal = document.getElementById('modalDescription');
+const precioDelModal = document.getElementById('modalPrice');
+
+/**
+ * Abre la descripción del producto
+ * @param {producto} product 
+ */
 function abrirProducto(product) {
-  nombreAInsertar.textContent = product.name; // Actualizar la descripción en el modal
-  descriptionAInsertar.textContent = product.description; // Actualizar la descripción en el modal
-  precioAInsertar.textContent = "$" + product.price; // Actualizar la descripción en el modal
+  nombreDelModal.textContent = product.name;
+  descriptionDelModal.textContent = product.description;
+  precioDelModal.textContent = "$" + product.price;
 
   const modal = document.getElementById('productModal');
-  modal.classList.add('is-active'); // Abrir el modal
+  modal.classList.add('is-active');
 }
+
+/**
+ * Sección para la creación y el manejo del carrito de compras
+ */
 
 const carrito = document.getElementById('carrito');
 const productosEnCarrito = [];
 
+//Permite mantener cliqueado el producto y arrastrarlo
 carrito.addEventListener('dragover', function(event) {
-  event.preventDefault(); // Permite soltar
+  event.preventDefault();
 });
 
+//Al soltar el elemento en el área del carrito se agregue a la lista del carrito
 carrito.addEventListener('drop', function(event) {
   event.preventDefault();
   const data = event.dataTransfer.getData('text/plain');
@@ -277,34 +322,53 @@ carrito.addEventListener('drop', function(event) {
   agregarProductoAlCarrito(producto);
 });
 
+/**
+ * Agrega productos al carrito según sean arrastrados hacia el área indicada. Para esto crea una box con todas las propiedades del producto dentro de la misma.
+ * No admite duplicados y tiene un botón para eliminar el elemento del carrito.
+ * @param {producto} producto 
+ */
 function agregarProductoAlCarrito(producto) {
-  // Evitar duplicados
   const productoExistente = productosEnCarrito.find(p => p.id === producto.id);
   if (!productoExistente) {
     productosEnCarrito.push(producto);
 
     const item = document.createElement('div');
     item.className = "box";
+    item.dataset.id = producto.id;
     item.innerHTML = `
       <p><strong>${producto.name}</strong></p>
       <p>$${producto.price}</p>
-      <button class="button is-danger is-small" onclick="eliminarProductoDelCarrito(${producto.id})">Eliminar</button>
+      <button class="btnEliminar button is-danger is-small">Eliminar</button>
     `;
 
     carrito.appendChild(item);
+
+    item.querySelector('.btnEliminar').addEventListener('click', function() {
+      eliminarProductoDelCarrito(producto.id);
+    });
   } else {
     alert("Este producto ya está en el carrito.");
   }
 }
 
+/**
+ * Elimina productos de la lista de "Productos En Carrito". 
+ * Se ejecuta cuando se presiona el botón de eliminar en algúno de los elementos dentro del carrito.
+ * @param {} id 
+ */
 function eliminarProductoDelCarrito(id) {
   // Eliminar el producto del array
   const index = productosEnCarrito.findIndex(producto => producto.id === id);
   if (index !== -1) {
     productosEnCarrito.splice(index, 1);
 
-    // Actualizar la interfaz
-    const item = carrito.querySelector(`.box:nth-child(${index + 1})`);
-    carrito.removeChild(item);
+    // Eliminar el elemento del DOM
+    const item = carrito.querySelector(`.box[data-id="${id}"]`);
+    if (item) {
+      carrito.removeChild(item);
+    }
   }
 }
+
+// Para inicializar y mostrar los productos al cargar la página
+displayProducts(productos);

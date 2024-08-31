@@ -122,7 +122,7 @@ function displayProducts(productos) {
   } else {
     productos.forEach(producto => {
       const column = document.createElement('div');
-      column.className = "column is-one-quarter";
+      column.className = "column is-full-tablet is-half-desktop is-one-third-widescreen is-one-quarter-fullhd";
 
       const productCard = `
       <div class="card">

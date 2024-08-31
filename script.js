@@ -1,4 +1,3 @@
-/*Lista de productos en la tienda. Acá están almacenados los productos que se muestran en la página*/
 const productos = [
   {
     "name": "Wireless Mouse",
@@ -93,29 +92,31 @@ const productos = [
   }
 ];
 
-/*Manejo para el input, los botones y la creación de las tarjetas para los productos*/
+// Cargar productos desde localStorage si existen
+function cargarProductosDesdeLocalStorage() {
+  const productosGuardados = localStorage.getItem('productos');
+  if (productosGuardados) {
+    const productosCargados = JSON.parse(productosGuardados);
+    productosCargados.forEach(productoCargado => {
+      const productoExistente = productos.find(producto => producto.id === productoCargado.id);
+      if (!productoExistente) {
+        productos.push(productoCargado);
+      }
+    });
+  }
+}
 
 const inputIngresado = document.getElementById('input');
 const buscarBoton = document.getElementById('btnBuscar');
 const tarjetas = document.getElementById('tarjetas');
 
-
-/**
- * Devuelve un mensaje en caso de no haber encontrado un producto.
-*/
 function noResultados() {
   tarjetas.innerHTML = "<p>No se encontraron objetos</p>";
 }
 
-/**
- * Esta función se encarga de mostrar los productos en la pantalla. 
- * Para eso, se encarga de crear las tarjetas de cada uno y ponerles las propiedades adecuadas para el
- * drag and drop. Además, ya se crea un evento al hacer click que hace que se muestre el modal con la información del producto.
-*/
 function displayProducts(productos) {
   tarjetas.innerHTML = ""; 
 
-  /*Con este IF se crea la estructura de la tarjeta para cada producto */
   if (productos.length === 0) {
     noResultados();
   } else {
@@ -154,8 +155,6 @@ function displayProducts(productos) {
       column.querySelector('.card').addEventListener('click', function() {
         abrirProducto(producto);
       });
-
-      //Evento para "habilitar" el drag and drop
       column.querySelector('.card').addEventListener('dragstart', function(event) {
         event.dataTransfer.setData('text/plain', JSON.stringify(producto));
       });
@@ -163,9 +162,6 @@ function displayProducts(productos) {
   }
 }
 
-/**
- * Acá habilitamos la busqueda cliqueando en el botón de "Search" como parte de la letra de la propuesta
- */
 buscarBoton.addEventListener('click', function() {
   const query = inputIngresado.value.toLowerCase();
   const filteredProducts = productos.filter(product => 
@@ -174,9 +170,7 @@ buscarBoton.addEventListener('click', function() {
   displayProducts(filteredProducts);
 });
 
-/**
- * Esta es una alternativa al botón "Search", acá se realiza una búsqueda dinámica de los productos en la página
- */
+// Escuchar el evento 'input' en el campo de búsqueda
 inputIngresado.addEventListener('input', function() {
   const query = inputIngresado.value.toLowerCase();
   const filteredProducts = productos.filter(product => 
@@ -185,12 +179,33 @@ inputIngresado.addEventListener('input', function() {
   displayProducts(filteredProducts);
 });
 
-/*------------------------------ PARTE 2 ---------------------------------- */
+// Funciones para ordenar productos
+function ordenarMenorAMayor() {
+  const productosOrdenados = [...productos].sort((a, b) => a.price - b.price);
+  displayProducts(productosOrdenados);
+}
 
-/**
- * Código extraído de Bulma para el modal.
- */
+function ordenarMayorAMenor() {
+  const productosOrdenados = [...productos].sort((a, b) => b.price - a.price);
+  displayProducts(productosOrdenados);
+}
+
+// Manejar el cambio en el menú desplegable
+document.getElementById('ordenar').addEventListener('change', function() {
+  const valorSeleccionado = this.value;
+
+  if (valorSeleccionado === 'menorAMayor') {
+    ordenarMenorAMayor();
+  } else if (valorSeleccionado === 'mayorAMenor') {
+    ordenarMayorAMenor();
+  } else {
+    displayProducts(productos); // Mostrar productos originales si no se selecciona nada
+  }
+});
+
+/*------------------------------ PARTE 2 ---------------------------------- */
 document.addEventListener('DOMContentLoaded', () => {
+
   function openModal($el) {
     $el.classList.add('is-active');
   }
@@ -205,6 +220,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
+  // Agregar evento a botones para abrir un modal específico
   (document.querySelectorAll('.js-modal-trigger') || []).forEach(($trigger) => {
     const modal = $trigger.dataset.target;
     const $target = document.getElementById(modal);
@@ -214,6 +230,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
+  // Agregar evento de clic en varios elementos para cerrar el modal
   (document.querySelectorAll('.modal-background, .modal-close, .modal-card-head .delete, .modal-card-foot .button') || []).forEach(($close) => {
     const $target = $close.closest('.modal');
 
@@ -222,21 +239,19 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-  document.addEventListener('keydown', (event) => {
-    if(event.key === "Escape") {
-      closeAllModals();
-    }
-  });
+  cargarProductosDesdeLocalStorage(); // Cargar los productos guardados al cargar la página
+  cargarCarritoDesdeLocalStorage();   // Cargar el carrito guardado al cargar la página
+  displayProducts(productos);         // Mostrar los productos
 });
 
-/**
- * Sección para agregar un nuevo producto a la página
- */
 const name2 = document.getElementById('Name');
 const description = document.getElementById('description');
 const price = document.getElementById('price');
 const image = document.getElementById('image');
-const funcionCrear = document.getElementById('Create');
+
+function guardarProductosEnLocalStorage() {
+  localStorage.setItem('productos', JSON.stringify(productos));
+}
 
 function agregarProducto() {
   const nameValue = name2.value.trim();
@@ -244,7 +259,7 @@ function agregarProducto() {
   const priceValue = parseFloat(price.value);
   const imageFile = image.files.length > 0 ? image.files[0] : null;
   const id = productos.length + 1;
-
+  
   if (nameValue === "") {
     alert("El nombre del producto no puede estar vacío.");
     return;
@@ -266,54 +281,69 @@ function agregarProducto() {
   }
 
   const nuevoProducto = {
+    id: id,
     name: nameValue,
     description: descriptionValue,
     price: priceValue,
-    image: imageFile ? URL.createObjectURL(imageFile) : "https://via.placeholder.com/150?text=Image+Not+Available",
-    id: // Agregar id aquí
+    image: imageFile ? URL.createObjectURL(imageFile) : "https://via.placeholder.com/150?text=Image+Not+Available"
   };
+  
   productos.push(nuevoProducto);
+  guardarProductosEnLocalStorage(); // Guardar productos actualizados en localStorage
   displayProducts(productos);
 }
 
-displayProducts(productos);
+const funcionCrear = document.getElementById('Create');
 
+// Mostrar todos los productos inicialmente
+displayProducts(productos);
 funcionCrear.addEventListener('click', agregarProducto);
 
-/**
- * Sección para el manejo de los Modales
- */
+const nombreAInsertar = document.getElementById('modalName');
+const descriptionAInsertar = document.getElementById('modalDescription');
+const precioAInsertar = document.getElementById('modalPrice');
 
-const nombreDelModal = document.getElementById('modalName');
-const descriptionDelModal = document.getElementById('modalDescription');
-const precioDelModal = document.getElementById('modalPrice');
-
-/**
- * Abre la descripción del producto
- * @param {producto} product 
- */
 function abrirProducto(product) {
-  nombreDelModal.textContent = product.name;
-  descriptionDelModal.textContent = product.description;
-  precioDelModal.textContent = "$" + product.price;
+  nombreAInsertar.textContent = product.name; // Actualizar la descripción en el modal
+  descriptionAInsertar.textContent = product.description; // Actualizar la descripción en el modal
+  precioAInsertar.textContent = "$" + product.price; // Actualizar la descripción en el modal
 
   const modal = document.getElementById('productModal');
-  modal.classList.add('is-active');
+  modal.classList.add('is-active'); // Abrir el modal
 }
-
-/**
- * Sección para la creación y el manejo del carrito de compras
- */
 
 const carrito = document.getElementById('carrito');
 const productosEnCarrito = [];
 
-//Permite mantener cliqueado el producto y arrastrarlo
+function guardarCarritoEnLocalStorage() {
+  localStorage.setItem('carrito', JSON.stringify(productosEnCarrito));
+}
+
+function cargarCarritoDesdeLocalStorage() {
+  const carritoGuardado = localStorage.getItem('carrito');
+  const carritoItems = document.getElementById('carritoItems'); // Nuevo contenedor solo para los ítems del carrito
+  carritoItems.innerHTML = ''; // Limpiar los ítems del carrito antes de agregar productos
+  productosEnCarrito.length = 0; // Vaciar el array de productos en carrito
+
+  if (carritoGuardado) {
+    productosEnCarrito.push(...JSON.parse(carritoGuardado));
+    productosEnCarrito.forEach(producto => {
+      const item = document.createElement('div');
+      item.className = "box";
+      item.innerHTML = `
+        <p><strong>${producto.name}</strong></p>
+        <p>$${producto.price}</p>
+        <button class="button is-danger is-small" onclick="eliminarProductoDelCarrito(${producto.id})">Eliminar</button>
+      `;
+      carritoItems.appendChild(item);
+    });
+  }
+}
+
 carrito.addEventListener('dragover', function(event) {
-  event.preventDefault();
+  event.preventDefault(); // Permite soltar
 });
 
-//Al soltar el elemento en el área del carrito se agregue a la lista del carrito
 carrito.addEventListener('drop', function(event) {
   event.preventDefault();
   const data = event.dataTransfer.getData('text/plain');
@@ -322,53 +352,38 @@ carrito.addEventListener('drop', function(event) {
   agregarProductoAlCarrito(producto);
 });
 
-/**
- * Agrega productos al carrito según sean arrastrados hacia el área indicada. Para esto crea una box con todas las propiedades del producto dentro de la misma.
- * No admite duplicados y tiene un botón para eliminar el elemento del carrito.
- * @param {producto} producto 
- */
 function agregarProductoAlCarrito(producto) {
+  // Evitar duplicados
   const productoExistente = productosEnCarrito.find(p => p.id === producto.id);
   if (!productoExistente) {
     productosEnCarrito.push(producto);
 
+    const carritoItems = document.getElementById('carritoItems');
     const item = document.createElement('div');
     item.className = "box";
-    item.dataset.id = producto.id;
     item.innerHTML = `
       <p><strong>${producto.name}</strong></p>
       <p>$${producto.price}</p>
-      <button class="btnEliminar button is-danger is-small">Eliminar</button>
+      <button class="button is-danger is-small" onclick="eliminarProductoDelCarrito(${producto.id})">Eliminar</button>
     `;
 
-    carrito.appendChild(item);
-
-    item.querySelector('.btnEliminar').addEventListener('click', function() {
-      eliminarProductoDelCarrito(producto.id);
-    });
+    carritoItems.appendChild(item);
+    guardarCarritoEnLocalStorage(); // Guardar el carrito actualizado en localStorage
   } else {
     alert("Este producto ya está en el carrito.");
   }
 }
 
-/**
- * Elimina productos de la lista de "Productos En Carrito". 
- * Se ejecuta cuando se presiona el botón de eliminar en algúno de los elementos dentro del carrito.
- * @param {} id 
- */
 function eliminarProductoDelCarrito(id) {
   // Eliminar el producto del array
   const index = productosEnCarrito.findIndex(producto => producto.id === id);
   if (index !== -1) {
     productosEnCarrito.splice(index, 1);
 
-    // Eliminar el elemento del DOM
-    const item = carrito.querySelector(`.box[data-id="${id}"]`);
-    if (item) {
-      carrito.removeChild(item);
-    }
+    // Actualizar la interfaz
+    const carritoItems = document.getElementById('carritoItems');
+    const item = carritoItems.querySelector(`.box:nth-child(${index + 1})`);
+    carritoItems.removeChild(item);
+    guardarCarritoEnLocalStorage(); // Actualizar el carrito en localStorage
   }
 }
-
-// Para inicializar y mostrar los productos al cargar la página
-displayProducts(productos);

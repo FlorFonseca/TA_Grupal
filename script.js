@@ -3,91 +3,91 @@ const productos = [
     "name": "Wireless Mouse",
     "description": "Ergonomic wireless mouse with adjustable DPI.",
     "price": 29.99,
-    "image": "https://via.placeholder.com/150?text=Wireless+Mouse",
+    "image": "imagenes/wireless_mouse.jpg",
     "id": 1
   },
   {
     "name": "Mechanical Keyboard",
     "description": "RGB backlit mechanical keyboard with Cherry MX switches.",
     "price": 89.99,
-    "image": "https://via.placeholder.com/150?text=Mechanical+Keyboard",
+    "image": "imagenes/mechanical_keyboard.jpg",
     "id": 2
   },
   {
     "name": "Gaming Headset",
     "description": "Surround sound gaming headset with noise-cancelling microphone.",
     "price": 59.99,
-    "image": "https://via.placeholder.com/150?text=Gaming+Headset",
+    "image": "imagenes/headset.jpg",
     "id": 3
   },
   {
     "name": "27-inch Monitor",
     "description": "4K UHD monitor with IPS display and 144Hz refresh rate.",
     "price": 329.99,
-    "image": "https://via.placeholder.com/150?text=27-inch+Monitor",
+    "image": "imagenes/27_inch_monitor.jpg",
     "id": 4
   },
   {
     "name": "Laptop Stand",
     "description": "Adjustable aluminum laptop stand for ergonomic work setup.",
     "price": 39.99,
-    "image": "https://via.placeholder.com/150?text=Laptop+Stand",
+    "image": "imagenes/laptop_stand.jpg",
     "id": 5
   },
   {
     "name": "USB-C Hub",
     "description": "Multi-port USB-C hub with HDMI, USB 3.0, and SD card reader.",
     "price": 24.99,
-    "image": "https://via.placeholder.com/150?text=USB-C+Hub",
+    "image": "imagenes/usbc_hub.jpg",
     "id": 6
   },
   {
     "name": "External SSD",
     "description": "Portable external SSD with 1TB storage and USB 3.1 interface.",
     "price": 129.99,
-    "image": "https://via.placeholder.com/150?text=External+SSD",
+    "image": "imagenes/external_ssd.jpg",
     "id": 7
   },
   {
     "name": "Smartphone Stand",
     "description": "Adjustable smartphone stand with 360-degree rotation.",
     "price": 19.99,
-    "image": "https://via.placeholder.com/150?text=Smartphone+Stand",
+    "image": "imagenes/smartphone_stand.jpg",
     "id": 8
   },
   {
     "name": "Bluetooth Speaker",
     "description": "Portable Bluetooth speaker with 10-hour battery life.",
     "price": 49.99,
-    "image": "https://via.placeholder.com/150?text=Bluetooth+Speaker",
+    "image": "imagenes/bt_speaker2.jpg",
     "id": 9
   },
   {
     "name": "Webcam",
     "description": "1080p HD webcam with built-in microphone and privacy cover.",
     "price": 34.99,
-    "image": "https://via.placeholder.com/150?text=Webcam",
+    "image": "imagenes/webcam.jpg",
     "id": 10
   },
   {
     "name": "Wireless Charger",
     "description": "Fast wireless charger with Qi compatibility.",
     "price": 25.99,
-    "image": "https://via.placeholder.com/150?text=Wireless+Charger",
+    "image": "imagenes/wireless_charger.jpg",
     "id": 11
   },
   {
     "name": "Noise-Cancelling Headphones",
     "description": "Over-ear noise-cancelling headphones with Bluetooth connectivity.",
     "price": 199.99,
-    "image": "https://via.placeholder.com/150?text=Noise-Cancelling+Headphones",
+    "image": "imagenes/nc_headphones.jpg",
     "id": 12
   },
   {
     "name": "Smartwatch",
     "description": "Smartwatch with heart rate monitor and GPS.",
     "price": 149.99,
-    "image": "https://via.placeholder.com/150?text=Smartwatch",
+    "image": "imagenes/smartwatch.jpg",
     "id": 13
   }
 ];

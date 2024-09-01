@@ -1,3 +1,4 @@
+//Arreglo de productos que contiene la información de cada uno.
 const productos = [
   {
     "name": "Wireless Mouse",
@@ -95,10 +96,14 @@ const productos = [
 // Cargar productos desde localStorage si existen
 function cargarProductosDesdeLocalStorage() {
   const productosGuardados = localStorage.getItem('productos');
+
   if (productosGuardados) {
     const productosCargados = JSON.parse(productosGuardados);
+    
     productosCargados.forEach(productoCargado => {
       const productoExistente = productos.find(producto => producto.id === productoCargado.id);
+      
+      //Verificar si el producto ya existe en el arreglo.
       if (!productoExistente) {
         productos.push(productoCargado);
       }
@@ -106,24 +111,30 @@ function cargarProductosDesdeLocalStorage() {
   }
 }
 
+//Elementos del DOM para realizar acciones.
 const inputIngresado = document.getElementById('input');
 const buscarBoton = document.getElementById('btnBuscar');
 const tarjetas = document.getElementById('tarjetas');
 
+// Función para mostrar mensaje cuando no hay resultados.
 function noResultados() {
   tarjetas.innerHTML = "<p>No se encontraron objetos</p>";
 }
 
+// Función que se encarga de mostrar los productos en la interfaz
 function displayProducts(productos) {
   tarjetas.innerHTML = ""; 
-
+//Muestra mensaje si no hay resultados.
   if (productos.length === 0) {
     noResultados();
   } else {
     productos.forEach(producto => {
+
+      // Crear la estructura de la tarjeta para cada producto
       const column = document.createElement('div');
       column.className = "column is-full-tablet is-half-desktop is-one-third-widescreen is-one-quarter-fullhd";
 
+      // Template HTML para la tarjeta del producto
       const productCard = `
       <div class="card">
         <div class="card-image">
@@ -162,20 +173,25 @@ function displayProducts(productos) {
   }
 }
 
+// Evento para manejar la búsqueda de productos
 buscarBoton.addEventListener('click', function() {
   const query = inputIngresado.value.toLowerCase();
+
   const filteredProducts = productos.filter(product => 
     product.name.toLowerCase().includes(query)
   );
+
   displayProducts(filteredProducts);
 });
 
-// Escuchar el evento 'input' en el campo de búsqueda
+// Escuchar el evento 'input' en el campo de búsqueda para actualizar resultados en tiempo real
 inputIngresado.addEventListener('input', function() {
   const query = inputIngresado.value.toLowerCase();
+
   const filteredProducts = productos.filter(product => 
     product.name.toLowerCase().includes(query)
   );
+
   displayProducts(filteredProducts);
 });
 
@@ -204,6 +220,8 @@ document.getElementById('ordenar').addEventListener('change', function() {
 });
 
 /*------------------------------ PARTE 2 ---------------------------------- */
+
+// Funciones para manejar la apertura y cierre de modales
 document.addEventListener('DOMContentLoaded', () => {
 
   function openModal($el) {
@@ -244,15 +262,19 @@ document.addEventListener('DOMContentLoaded', () => {
   displayProducts(productos);         // Mostrar los productos
 });
 
+// Variables para los campos del formulario de producto
 const name2 = document.getElementById('Name');
 const description = document.getElementById('description');
 const price = document.getElementById('price');
 const image = document.getElementById('image');
 
+
+// Función para guardar productos en localStorage
 function guardarProductosEnLocalStorage() {
   localStorage.setItem('productos', JSON.stringify(productos));
 }
 
+// Función para agregar un nuevo producto desde el formulario
 function agregarProducto() {
   const nameValue = name2.value.trim();
   const descriptionValue = description.value.trim();
@@ -260,8 +282,15 @@ function agregarProducto() {
   const imageFile = image.files.length > 0 ? image.files[0] : null;
   const id = productos.length + 1;
   
+  // Validaciones de los campos del formulario
   if (nameValue === "") {
     alert("El nombre del producto no puede estar vacío.");
+    return;
+  }
+
+  const nombreDuplicado = productos.some(producto => producto.name.toLowerCase() === nameValue.toLowerCase());
+  if (nombreDuplicado) {
+    alert("Ya existe un producto con este nombre. Por favor, elija otro nombre.");
     return;
   }
 
@@ -280,6 +309,7 @@ function agregarProducto() {
     return;
   }
 
+  // Crear un nuevo producto y agregarlo al array de productos
   const nuevoProducto = {
     id: id,
     name: nameValue,
@@ -293,16 +323,17 @@ function agregarProducto() {
   displayProducts(productos);
 }
 
+// Agregar evento al botón de crear producto
 const funcionCrear = document.getElementById('Create');
-
-// Mostrar todos los productos inicialmente
 displayProducts(productos);
 funcionCrear.addEventListener('click', agregarProducto);
 
+// Variables para mostrar detalles del producto en el modal
 const nombreAInsertar = document.getElementById('modalName');
 const descriptionAInsertar = document.getElementById('modalDescription');
 const precioAInsertar = document.getElementById('modalPrice');
 
+// Función para abrir el modal con detalles de un producto
 function abrirProducto(product) {
   nombreAInsertar.textContent = product.name; // Actualizar la descripción en el modal
   descriptionAInsertar.textContent = product.description; // Actualizar la descripción en el modal
@@ -319,6 +350,7 @@ function guardarCarritoEnLocalStorage() {
   localStorage.setItem('carrito', JSON.stringify(productosEnCarrito));
 }
 
+//Función para llenar el carrito de compras con elementos del LocalStoragle.
 function cargarCarritoDesdeLocalStorage() {
   const carritoGuardado = localStorage.getItem('carrito');
   const carritoItems = document.getElementById('carritoItems'); // Nuevo contenedor solo para los ítems del carrito
@@ -340,6 +372,7 @@ function cargarCarritoDesdeLocalStorage() {
   }
 }
 
+//Funcion para soltar los elementos en el carrito de compras.
 carrito.addEventListener('dragover', function(event) {
   event.preventDefault(); // Permite soltar
 });
@@ -374,8 +407,8 @@ function agregarProductoAlCarrito(producto) {
   }
 }
 
+// Eliminar el producto del array
 function eliminarProductoDelCarrito(id) {
-  // Eliminar el producto del array
   const index = productosEnCarrito.findIndex(producto => producto.id === id);
   if (index !== -1) {
     productosEnCarrito.splice(index, 1);
